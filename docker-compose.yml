@@ -1,0 +1,39 @@
+version: '3'
+services:
+
+  back-end:
+    build:
+      context: ./back-end
+      dockerfile: Dockerfile
+    container_name: shorturl_server
+    restart: always
+    depends_on:
+      - mongodb
+    ports:
+      - 3000:3000
+    networks:
+      - shorturl
+
+  # Mongo
+  mongodb:
+    image: mongo
+    container_name: shorturl_database
+    ports:
+      - "27017:27017"
+    networks:
+      - shorturl
+
+
+  front-end:
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile
+    container_name: shorturl_frontend
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - shorturl
+
+networks:
+  shorturl:

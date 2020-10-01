@@ -158,21 +158,5 @@ describe('AppService', () => {
 
       expect(testKeys.length).toEqual(Array.from(new Set(testKeys)).length)
     });
-
-
-    test('Short Url Key is Not Duplicated' , async () => {
-      // append several keys to list and they should all be diffrenet
-      const testKeys: Array<string> = [];
-
-      while(testKeys.length<10){
-        testKeys.push(await appService.createShortUrlKey(new Promise((resolve) => {
-          resolve(100000000000);
-        })))
-      }
-
-      expect(testKeys.length).not.toEqual(Array.from(new Set(testKeys)).length)
-    })
-
   });
-
 });

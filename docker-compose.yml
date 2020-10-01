@@ -10,7 +10,7 @@ services:
     depends_on:
       - mongodb
     ports:
-      - 3000:3000
+      - 3001:3000
     networks:
       - shorturl
 
@@ -31,7 +31,7 @@ services:
     container_name: shorturl_frontend
     restart: always
     ports:
-      - 8080:8080
+      - 81:80
     networks:
       - shorturl
 

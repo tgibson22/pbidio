@@ -2,21 +2,19 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
 
-    <form>
+    <div>
       <input v-model="inputUrl" placeholder="Enter URL">
-      <button v-on:click="shortenUrl(inputUrl)">Shorten</button>
+      <button v-on:click="shortenUrl(inputUrl)" class="margin-left-medium">Shorten</button>
 <!--      <div v-if="this.error"> {{ error }} </div>-->
-    </form>
+    </div>
 
-    <div v-if="this.allUrls">
-      <ul>
-        <h2>Recently shortened URLs . . .</h2>
-        <li v-for="(url, i) in allUrls" v-bind:key="i">
-          <div class="full-url"> {{ url.fullUrl.slice(1,-1) }} </div>
-          <div class="short-url"> {{ url.shortUrl }} </div>
-          <div class="separator"></div>
-        </li>
-      </ul>
+    <div v-if="this.allUrls" class="flex-col">
+      <h2>Recently shortened URLs . . .</h2>
+      <div v-for="(url, i) in allUrls" v-bind:key="i">
+        <div class="full-url"> {{ url.fullUrl.slice(1,-1) }} </div>
+        <div class="short-url"> {{ url.shortUrl }} </div>
+        <div class="separator"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -30,7 +28,6 @@ import {UrlPair, InputUrl} from "../types";
 interface ComponentData {
   inputUrl: InputUrl;
   allUrls: UrlPair[];
-  error: string | null;
 }
 
 export default Vue.extend({
@@ -39,7 +36,6 @@ export default Vue.extend({
     return {
       inputUrl: '',
       allUrls: [],
-      error: null
     };
   },
   methods: {
@@ -55,21 +51,23 @@ export default Vue.extend({
       });
     },
 
-    shortenUrl: function(inputUrl: InputUrl): Promise<UrlPair> | null {
+    shortenUrl: async function(inputUrl: InputUrl): Promise<void> {
 
-        const res: Promise<UrlPair> = urlDataService.shortenUrl(inputUrl).then(response => {
-          if(response.data != null) {
-            this.error = null;
-            this.allUrls.push(response.data);
-            return response.data
-          } else {
-            this.error = "Sorry, there was a problem with this URL";
-            return null
-          }
-        });
+      try {
+        const response = await urlDataService.shortenUrl(inputUrl);
 
-        return res
+        if(!response.data) {
+          window.alert("Sorry, there was a problem with this URL");
+          return;
+        }
+
+        this.allUrls.push(response.data);
       }
+      catch (err) {
+        window.alert("Sorry, there was a problem with this URL");
+        console.error(err);
+      }
+    }
 
   },
   props: {
@@ -108,5 +106,14 @@ a {
 
   .separator {
     border: 1px solid midnightblue;
+  }
+
+  .flex-col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .margin-left-medium {
+    margin-left: 20px;
   }
 </style>

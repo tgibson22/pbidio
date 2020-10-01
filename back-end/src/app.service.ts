@@ -96,6 +96,4 @@ export class AppService {
     return (await this.count).toString(36);
 
   }
-
-
 }

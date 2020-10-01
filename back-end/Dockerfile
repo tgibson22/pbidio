@@ -7,7 +7,7 @@
 #RUN npm run build
 
 
-FROM alpine:3.9.5
+FROM node:12-alpine
 
 RUN apk add yarn
 
@@ -22,4 +22,4 @@ COPY . .
 
 RUN yarn build
 
-CMD ["node", "./dist/src/server/index.js"]
+CMD ["node", "./dist/main.js"]

@@ -2,7 +2,8 @@
 
 Simple URL shortener built with Nest.js, Vue.js, Mongodb and TypeScript
 
-To see a demo,  open the root project directory and run docker-compose
+To run,  cd to top level project directory and run 'docker-compose build && docker-compose up'
 
-frontend served on local host:8080
-backend served on localhost:3000
+To test, 'cd back-end && yarn && yarn test'
+
+
